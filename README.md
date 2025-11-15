@@ -1,19 +1,31 @@
 # prak_gps
 
-**Tugas 1**: Geocoding (Alamat dari Koordinat)
-Saat ini kita hanya menampilkan Lat/Lng. Buatlah agar aplikasi menampilkan alamat
-(nama jalan, kota, dll) dari koordinat yang didapat.
-Petunjuk:
+**Tugas 2**: Jarak Real-time ke Titik Tetap
 
-1. Anda sudah menambahkan paket geocoding di pubspec.yaml.
+Manfaatkan fungsi Geolocator.distanceBetween dari Langkah 4.
+1. Buat variabel String? distanceToPNB; di MyHomePageState.
+![](img2/1.png)
+Variabel ini digunakan untuk menampilkan hasil perhitungan jarak di UI dan diperbarui setiap kali lokasi berubah.
 
-2. Import paketnya: import ’package:geocoding/geocoding.dart’;
+2. Di dalam startTracking (di dalam .listen()), panggil fungsi untuk menghitung
+jarak:
+![](img2/2.png)
+Sehingga saat tombol "Dapatkan Lokasi Sekarang" ditekan, jarak langsung muncul.
 
-3. Buat variabel String? currentAddress; di MyHomePageState.
+3. Simpan hasilnya di distanceToPNB menggunakan setState.
 
-4. Buat fungsi baru getAddressFromLatLng(Position position).
+A. panggil fungsi jarak saat ambil lokasi pertama kali
+![](img2/3.png)
+Fungsi pemanggilan ini memastikan jarak muncul meskipun tracking belum diaktifkan.
 
-5.  Panggil fungsi getAddressFromLatLng( currentPosition!) di dalam getLocation
-dan startTracking (di dalam .listen()) setelah setState untuk currentPosition.
+B. panggil fungsi jarak di stream pelacakan real-time
+![](img2/4.png)
+Setiap perubahan lokasi akan memperbarui jarak secara otomatis.
 
-6. Tampilkan currentAddress di UI Anda, di bawah Lat/Lng."# prak_geolocator-geolociding" 
+4. Tampilkan distanceToPNB di UI agar jaraknya ter-update secara real-time saat
+Anda bergerak
+![](img2/5.png)
+Jarak akan tampil di bawah informasi lokasi pengguna dan diperbarui secara real-time.
+
+5. Output
+![](img2/OUTPUT.png)

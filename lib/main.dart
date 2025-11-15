@@ -34,6 +34,15 @@ class _MyHomePageState extends State<MyHomePage> {
   StreamSubscription<Position>? _positionStream; // Penyimpan stream
   String? currentAddress; // Menyimpan alamat dari koordinat
 
+  // --- Tambahkan variabel baru di bawah variabel currentAddress ---
+  String? distanceToPNB; // Menyimpan jarak ke titik tetap (PNB)
+
+  // Titik tetap (PNB Jombang)
+  final double _pnbLatitude = -7.5450;
+  final double _pnbLongitude = 112.2331;
+
+
+
   @override
   void dispose() {
     // PENTING: Selalu batalkan stream saat widget dihancurkan
@@ -92,6 +101,21 @@ class _MyHomePageState extends State<MyHomePage> {
         }
   }
 
+    // Fungsi untuk menghitung jarak ke titik PNB
+  void _calculateDistanceToPNB(Position position) {
+    double distanceInMeters = Geolocator.distanceBetween(
+      position.latitude,
+      position.longitude,
+      _pnbLatitude,
+      _pnbLongitude,
+    );
+
+    setState(() {
+      distanceToPNB = (distanceInMeters / 1000).toStringAsFixed(2); // dalam kilometer
+    });
+  }
+
+
   void _handleGetLocation() async {
     try {
       Position position = await _getPermissionAndLocation();
@@ -101,6 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
       });
 
       getAddressFromLatLng(position);// Dapatkan alamat dari koordinat
+      _calculateDistanceToPNB(position); // tambahkan baris ini
     } catch (e) {
       setState(() {
         _errorMessage = e.toString(); // Tampilkan error di UI
@@ -127,6 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
               _errorMessage = null;
             });
             getAddressFromLatLng(position);// Dapatkan alamat dari koordinat
+            _calculateDistanceToPNB(position); // tambahkan baris ini
            
           });
     } catch (e) {
@@ -197,6 +223,22 @@ class _MyHomePageState extends State<MyHomePage> {
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 16),
                   ),
+                  
+                  // Tampilkan Jarak ke PNB
+                  if (distanceToPNB != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        "Jarak ke PNB: $distanceToPNB km",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.teal,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+
                 //
                 ElevatedButton.icon(
                   icon: Icon(Icons.location_searching),
