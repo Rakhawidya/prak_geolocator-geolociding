@@ -28,4 +28,4 @@ Anda bergerak
 Jarak akan tampil di bawah informasi lokasi pengguna dan diperbarui secara real-time.
 
 5. Output
-![](img2/OUTPUT.png)
+![](img2/output.png)
